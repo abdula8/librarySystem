@@ -1,0 +1,25 @@
+employee_permissions
+employee_name    VARCHAR(45)
+books_tab
+clients_tab
+dashboard_tab
+history_tab
+reports_tab
+settings_tab
+add_book
+edit_book
+delete_book
+import_book
+export_book
+add_client
+edit_client
+delete_client
+import_client
+export_client
+add_branch
+add_publisher
+add_author
+add_category
+add_employee
+edit_employee
+is_admin

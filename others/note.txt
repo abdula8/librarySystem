@@ -1,0 +1,12 @@
+to run project you must be in dirctory of python3.7
+	C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+then:
+	write "./python" not "python" directlry to run python file that is in this directory not python10 file
+	./python FULL-PATH-OF-THE-SCRIPT e.g. E:\CyberSecurity\python\python\Python-GUI\DB_Structure.py
+
+
+to add in combobox static items from qt.exe itself ==> R+clk on it and choose "Edit item"
+
+if you want to edit in database manually ==>> close the app first then edit as you want else it will not edit it.
+
+
