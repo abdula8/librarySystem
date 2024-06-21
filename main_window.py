@@ -243,6 +243,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.db_ops.execute_query(sql, param)
             self.db_ops.commit()
             print("Client added")
+            self.statusBar().showMessage("تم إضافة العميل بنجاح")
+            self.ui_ops.pop_up_message("تم إضافة العميل بنجاح", "Password Correct")
+            # import time
+            # time.sleep(1)
+            ## add new Client
+            client_name         = self.lineEdit_14.setText('')
+            client_email        = self.lineEdit_15.setText('')
+            client_phone        = self.lineEdit_16.setText('')
+            client_national_id  = self.lineEdit_17.setText('')
 
 
     def edit_client(self):
