@@ -1,6 +1,0 @@
-search: desktop application font family
-color pattern
-edit style sheet
-pyqt stylesheet github
-to change style: ==> right click on the background of the UI overall then choose "change stylesheet"
-peewee documentation
