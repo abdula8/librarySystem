@@ -72,12 +72,15 @@ class UiOperations:
     def get_dashboard_data(self):
         pass
 
-    def pop_up_message(self, message, title):
-        msg = QMessageBox()
-        msg.setWindowTitle(title)
-        msg.setText(message)
-        x = msg.exec_()
-
+    def pop_up_message(self, message, title, action):
+        if action == "delete":
+            msg = QMessageBox.warning(self, title, message, QMessageBox.Yes| QMessageBox.No)
+            return msg
+        else:
+            msg = QMessageBox()
+            msg.setWindowTitle(title)
+            msg.setText(message)
+            x = msg.exec_()
 '''
     # My Work
     def Open_Login_Tab(self):

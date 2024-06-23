@@ -36,6 +36,17 @@ class DbOperations:
         else:
             logging.error("Database connection is not initialized.")
             return None
+    def execute_fetchone(self, query, params=None):
+        if self.cur is not None:
+            try:
+                self.cur.execute(query, params)
+                return self.cur.fetchone()
+            except mysql.connector.Error as err:
+                logging.error(f"Query Error: {err}")
+                return None
+        else:
+            logging.error("Database connection is not initialized.")
+            return None
     def __del__(self):
         if self.cur is not None:
             self.cur.close()
