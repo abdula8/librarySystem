@@ -72,10 +72,13 @@ class UiOperations:
     def get_dashboard_data(self):
         pass
 
-    def pop_up_message(self, message, title, action):
+    def pop_up_message(self, parent, message, title, action):
         if action == "delete":
-            msg = QMessageBox.warning(self, title, message, QMessageBox.Yes| QMessageBox.No)
-            return msg
+            msg = QMessageBox.question(parent, title, message, QMessageBox.Yes| QMessageBox.No)
+            if msg == QMessageBox.Yes:
+                return True
+            elif msg == QMessageBox.No:
+                return False
         else:
             msg = QMessageBox()
             msg.setWindowTitle(title)

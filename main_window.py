@@ -245,7 +245,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.db_ops.commit()
             print("Client added")
             self.statusBar().showMessage("تم إضافة العميل بنجاح")
-            self.ui_ops.pop_up_message("تم إضافة العميل بنجاح", "Password Correct", 0)
+            self.ui_ops.pop_up_message(self, "تم إضافة العميل بنجاح", "Password Correct", 0)
             # import time
             # time.sleep(1)
             ## add new Client
@@ -253,6 +253,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             client_email        = self.lineEdit_15.setText('')
             client_phone        = self.lineEdit_16.setText('')
             client_national_id  = self.lineEdit_17.setText('')
+        self.Show_All_Clients()
 
     def edit_client_search(self): # button 19
         ## edit Client
@@ -262,10 +263,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             sql = ('''SELECT * FROM clients WHERE mail = %s''')
             data = self.db_ops.execute_fetchone(sql, (client_data,))
             # data = self.cur.fetchone()
-            print(data)
+            # print(data)
         elif self.comboBox_16.currentIndex() == 1:
             sql = ('''SELECT * FROM clients WHERE national_id = %s''')
-            self.db_ops.execute_fetchone(sql, [(client_data)])
+            data = self.db_ops.execute_fetchone(sql, (client_data,))
             # data = self.cur.fetchone()
             # print(data)
         self.lineEdit_20.setText(data[1]) # name
@@ -300,14 +301,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ## history above
 
         self.statusBar().showMessage("تم تعديل معلومات العميل بنجاح")
-        self.ui_ops.pop_up_message("تم تعديل العميل", "DONE", 0)
+        self.ui_ops.pop_up_message(self, "تم تعديل العميل", "DONE", 0)
         ## to clear text from text boxes after ending the editng
         self.lineEdit_20.setText('')  # name
         self.lineEdit_22.setText('')  # name
         self.lineEdit_21.setText('')  # mail
         self.lineEdit_18.setText('')  # phone
         self.lineEdit_19.setText('')  # national id
-        # self.Show_All_Clients()
+        self.Show_All_Clients()
 
         # self.PopUpMessage("تم تعديل معلومات الكتاب بنجاح", "Congratulations")
         # QMessageBox.information(self, "Success", "تم تعديل معلومات الكتاب بنجاح")
@@ -317,19 +318,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ## delete Client from DB
         client_data = self.lineEdit_22.text()
 
-        delete_message = self.ui_ops.pop_up_message("Delete info.", "هل انت متأكد من انك تريد مسح العميل؟", "delete")
-        print(delete_message)
-        if str(delete_message) == "QMessageBox.Yes":
+        delete_message = self.ui_ops.pop_up_message(self, "Delete info.", "هل انت متأكد من انك تريد مسح العميل؟", "delete")
+        # print(delete_message)
+        if delete_message:
             if self.comboBox_16.currentIndex() == 0:
                 sql = ('''DELETE FROM clients WHERE mail = %s ''')
-                param = (client_data)
-                self.db_ops.execute_query(sql, param)
+                param = (client_data,)
+                data = self.db_ops.execute_fetchone(sql, param)
                 # data = self.cur.fetchone()
                 # print(data)
 
             elif self.comboBox_16.currentIndex() == 1:
                 sql = ('''DELETE FROM clients WHERE national_id = %s ''')
-                self.cur.execute(sql, (client_data))
+                date = self.db_ops.execute_fetchone(sql, (client_data,))
+
                 # data = self.cur.fetchone()
                 # print(data)
 
@@ -345,19 +347,39 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # self.Show_History()
             ## history above
 
-            self.db.commit()
+            self.db_ops.commit()
             self.statusBar().showMessage("تم مسح بيانات العميل بنجاح")
-            self.ui_ops.pop_up_message("تم مسح العميل", "DONE", 0)
+            self.ui_ops.pop_up_message(self, "تم مسح العميل", "DONE", 0)
             ## to clear text from text boxes after ending the editng
             self.lineEdit_20.setText('')  # name
             self.lineEdit_22.setText('')  # name
             self.lineEdit_21.setText('')  # mail
             self.lineEdit_18.setText('')  # phone
             self.lineEdit_19.setText('')  # national id
-            print(":Done:::!!!")
+            print(":Deleted:::!!!")
 
             self.Show_All_Clients()
 
+    def Show_All_Clients(self):
+        ## show all Clients
+        # print("Show All Clients")
+        self.tableWidget_4.setRowCount(0)
+        self.tableWidget_4.insertRow(0)
+
+        sql = ('''SELECT name, mail, phone, national_id, date FROM clients''')
+        data = self.db_ops.execute_query(sql)
+        # data = self.cur.fetchall()
+        # print(data)
+
+        ## row = iteration, form = data
+        for row, form in enumerate(data):
+            for col, item in enumerate(form):
+                from PyQt5.QtWidgets import QTableWidgetItem
+                self.tableWidget_4.setItem(row, col, QTableWidgetItem(str(item)))
+                col += 1
+            row_position = self.tableWidget_4.rowCount()
+            self.tableWidget_4.insertRow(row_position)
+        # print("Show All Clients")
 
 
     def import_clients(self):
